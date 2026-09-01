@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#00020a">
+<title>The Goan Explorer — Travel Vlog by Aryan</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Exo+2:wght@200;300;400;600;700&family=Share+Tech+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#00020a; --bg2:#010410; --bg3:#020614;
+  --gold:#d4a843; --gold2:#f0c060; --rust:#c05a2a;
+  --cyan:#00e5ff; --blue:#1e4dff; --violet:#6d28d9;
+  --white:#e8f0ff; --light:#8aa0c8; --muted:#1e2d4a;
+  --red:#E50914;
+  --fd:'Cormorant Garamond',Georgia,serif;
+  --fb:'Exo 2',system-ui,sans-serif;
+  --fm:'Share Tech Mono',monospace;
+  --nav-h:66px;
+  --shadow-sm:0 2px 12px rgba(0,0,0,.5);
+  --shadow-md:0 8px 32px rgba(0,0,0,.6);
+  --shadow-lg:0 20px 70px rgba(0,0,0,.75);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--bg);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ═══════════════════════════════════
+   YOUTUBE INTRO
+═══════════════════════════════════ */
+#yt-intro {
+  position:fixed;inset:0;z-index:9999;
+  background:#000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
+  transition:opacity .8s ease;
+}
+#yt-intro.fade-out { opacity:0; pointer-events:none; }
+
+/* Phase 1: red youtube logo pops in, glows */
+.yt-logo-wrap {
+  display:flex;align-items:center;justify-content:center;gap:0;
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  white-space:nowrap;
+}
+.yt-icon-part {
+  /* the SVG YouTube logo */
+  opacity:0;
+  transform:scale(0.3) rotate(-15deg);
+  transition:none;
+  filter:drop-shadow(0 0 0px rgba(229,9,20,0));
+}
+.yt-icon-part.pop {
+  animation:ytPop .55s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes ytPop {
+  0%   { opacity:0; transform:scale(0.2) rotate(-20deg); filter:drop-shadow(0 0 0px rgba(229,9,20,0)); }
+  60%  { opacity:1; transform:scale(1.12) rotate(3deg);  filter:drop-shadow(0 0 40px rgba(229,9,20,.9)); }
+  80%  { transform:scale(0.96) rotate(-1deg); filter:drop-shadow(0 0 24px rgba(229,9,20,.7)); }
+  100% { opacity:1; transform:scale(1) rotate(0deg);     filter:drop-shadow(0 0 18px rgba(229,9,20,.6)); }
+}
+
+.yt-text-part {
+  font-family:'Exo 2',sans-serif;
+  font-weight:700;
+  font-size:clamp(28px,6vw,60px);
+  color:#fff;
+  letter-spacing:-1px;
+  opacity:0;
+  margin-left:12px;
+  position:relative;
+  top:2px;
+}
+
+/* Phase 2: logo+text shrink and rise */
+.yt-combined {
+  display:flex;align-items:center;gap:12px;
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%) scale(1);
+  opacity:1;
+  transition:none;
+  white-space:nowrap;
+}
+.yt-combined.rise {
+  animation:ytRise 1.1s cubic-bezier(.23,1,.32,1) forwards;
+}
+@keyframes ytRise {
+  0%   { transform:translate(-50%,-50%) scale(1); }
+  100% { transform:translate(-50%,-78%) scale(0.45); }
+}
+
+/* Phase 3: "The Goan Explorer" text */
+.yt-tagline {
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%, 0%);
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:700;
+  font-size:clamp(20px,4.5vw,48px);
+  color:#fff;
+  letter-spacing:0.06em;
+  opacity:0;
+  white-space:nowrap;
+}
+.yt-tagline.appear {
+  animation:tagAppear .9s cubic-bezier(.23,1,.32,1) forwards;
+}
+@keyframes tagAppear {
+  0%   { opacity:0; transform:translate(-50%, 40px); letter-spacing:0.18em; }
+  100% { opacity:1; transform:translate(-50%, 20px); letter-spacing:0.08em; }
+}
+
+/* gold underline accent */
+.yt-tagline-under {
+  position:absolute;
+  bottom:-8px; left:50%;
+  transform:translateX(-50%);
+  height:1px;
+  background:linear-gradient(to right,transparent,var(--gold),transparent);
+  width:0;
+  transition:width .8s ease .1s;
+}
+.yt-tagline.appear .yt-tagline-under { width:100%; }
+
+/* ═══════════════════════════════════
+   BACKGROUNDS
+═══════════════════════════════════ */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.aurora{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);mix-blend-mode:screen;will-change:transform;}
+.orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(184,130,26,.14),transparent 65%);top:-20%;left:-15%;animation:o1 42s ease-in-out infinite;}
+.orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(192,90,42,.1),transparent 68%);top:30%;right:-20%;animation:o2 50s ease-in-out infinite;}
+.orb-3{width:420px;height:420px;background:radial-gradient(circle,rgba(0,229,255,.07),transparent 68%);bottom:-10%;left:5%;animation:o3 38s ease-in-out infinite;}
+@keyframes o1{0%,100%{transform:translate(0,0)}50%{transform:translate(70px,55px)}}
+@keyframes o2{0%,100%{transform:translate(0,0)}50%{transform:translate(-65px,-50px)}}
+@keyframes o3{0%,100%{transform:translate(0,0)}50%{transform:translate(55px,-70px)}}
+.grid-overlay{position:fixed;inset:0;z-index:2;pointer-events:none;
+  background-image:linear-gradient(rgba(184,130,26,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(184,130,26,.012) 1px,transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 10%,transparent 100%);}
+
+/* ═══════════════════════════════════
+   NAV
+═══════════════════════════════════ */
+#mainSite{display:none;}
+#mainSite.visible{display:block;}
+
+nav {
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  background:rgba(0,2,10,.85);
+  backdrop-filter:blur(28px) saturate(1.6);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+nav::after {
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),rgba(184,130,26,.4),var(--gold),transparent);
+  opacity:.5;animation:navglow 6s ease-in-out infinite;
+}
+@keyframes navglow{0%,100%{opacity:.3}50%{opacity:.7}}
+
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;}
+.logo-icon{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--red),#a00);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(229,9,20,.45);flex-shrink:0;}
+.logo-icon svg{width:20px;height:14px;fill:#fff;}
+.logo-text{font-family:var(--fd);font-weight:700;font-size:1.05rem;letter-spacing:.12em;text-transform:uppercase;
+  background:linear-gradient(90deg,#fff,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+.nav-links{display:flex;align-items:center;gap:28px;list-style:none;}
+.nav-links a:not(.nav-cta){color:var(--light);text-decoration:none;font-family:var(--fm);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;transition:color .25s;position:relative;}
+.nav-links a:not(.nav-cta)::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:linear-gradient(to right,var(--gold),transparent);transition:width .35s;}
+.nav-links a:not(.nav-cta):hover{color:#fff;}
+.nav-links a:not(.nav-cta):hover::after{width:100%;}
+.nav-cta{display:inline-flex!important;align-items:center;gap:7px;padding:8px 18px;border-radius:6px;
+  background:linear-gradient(135deg,rgba(229,9,20,.18),rgba(180,0,0,.1));
+  border:1px solid rgba(229,9,20,.5);color:#ff6b6b!important;
+  font-family:var(--fm);font-weight:700;font-size:.56rem;letter-spacing:.14em;text-decoration:none!important;text-transform:uppercase;transition:all .3s;white-space:nowrap;}
+.nav-cta:hover{box-shadow:0 0 24px rgba(229,9,20,.4);color:#fff!important;}
+
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;z-index:1001;}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--gold);border-radius:2px;transition:all .3s;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-menu{position:fixed;top:var(--nav-h);left:0;right:0;z-index:999;
+  background:rgba(0,2,10,.97);backdrop-filter:blur(28px);border-bottom:1px solid rgba(184,130,26,.15);
+  transform:translateY(-110%);transition:transform .38s cubic-bezier(.23,1,.32,1);padding:20px 20px 28px;}
+.mobile-menu.open{transform:translateY(0);}
+.mobile-menu ul{list-style:none;display:flex;flex-direction:column;gap:4px;margin-bottom:16px;}
+.mobile-menu ul li a{display:block;padding:13px 16px;border-radius:8px;color:var(--light);text-decoration:none;font-family:var(--fm);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;transition:all .22s;}
+.mobile-menu ul li a:hover{background:rgba(184,130,26,.07);color:#fff;}
+.m-yt{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:8px;background:rgba(229,9,20,.18);border:1px solid rgba(229,9,20,.4);color:#ff6b6b;font-family:var(--fm);font-weight:700;font-size:.7rem;letter-spacing:.14em;text-decoration:none;text-transform:uppercase;}
+
+/* ═══════════════════════════════════
+   HERO
+═══════════════════════════════════ */
+.hero{position:relative;z-index:10;min-height:100svh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:calc(var(--nav-h) + 90px) 20px 50px;overflow:hidden;}
+
+/* spinning rings */
+.hero-ring{position:absolute;border-radius:50%;pointer-events:none;top:50%;left:50%;}
+.hr1{width:700px;height:700px;border:1px solid transparent;border-top-color:rgba(184,130,26,.22);border-bottom-color:rgba(184,130,26,.06);transform:translate(-50%,-50%);animation:spin1 70s linear infinite;}
+.hr2{width:520px;height:520px;border:1px solid transparent;border-left-color:rgba(192,90,42,.18);transform:translate(-50%,-50%);animation:spin2 50s linear infinite;}
+.hr3{width:360px;height:360px;border:1px solid transparent;border-top-color:rgba(229,9,20,.1);transform:translate(-50%,-50%);animation:spin1 38s linear infinite reverse;}
+@keyframes spin1{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes spin2{to{transform:translate(-50%,-50%) rotate(-360deg)}}
+.hr1::before{content:'';position:absolute;top:-5px;left:50%;width:10px;height:10px;background:var(--gold);border-radius:50%;box-shadow:0 0 14px var(--gold);transform:translateX(-50%);}
+.hr2::before{content:'';position:absolute;top:-4px;left:50%;width:8px;height:8px;background:var(--rust);border-radius:50%;box-shadow:0 0 12px var(--rust);transform:translateX(-50%);}
+
+.hero-corner{position:absolute;width:48px;height:48px;pointer-events:none;}
+.hc-tl{top:calc(var(--nav-h)+10px);left:16px;border-top:1.5px solid rgba(184,130,26,.4);border-left:1.5px solid rgba(184,130,26,.4);}
+.hc-tr{top:calc(var(--nav-h)+10px);right:16px;border-top:1.5px solid rgba(184,130,26,.4);border-right:1.5px solid rgba(184,130,26,.4);}
+.hc-bl{bottom:16px;left:16px;border-bottom:1.5px solid rgba(184,130,26,.4);border-left:1.5px solid rgba(184,130,26,.4);}
+.hc-br{bottom:16px;right:16px;border-bottom:1.5px solid rgba(184,130,26,.4);border-right:1.5px solid rgba(184,130,26,.4);}
+
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(184,130,26,.07);border:1px solid rgba(184,130,26,.3);border-radius:3px;
+  padding:6px 18px;font-family:var(--fm);font-size:.58rem;letter-spacing:.24em;color:var(--gold);
+  margin-bottom:22px;text-transform:uppercase;}
+.live-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;box-shadow:0 0 8px var(--gold);animation:blink 2s infinite;flex-shrink:0;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
+
+.hero h1{font-family:var(--fd);font-size:clamp(3rem,10vw,8.5rem);font-weight:700;line-height:.9;letter-spacing:.02em;margin-bottom:10px;}
+.gradient-text{background:linear-gradient(90deg,#fff 0%,var(--gold2) 30%,var(--gold) 60%,var(--rust) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:gt 8s linear infinite;display:inline-block;}
+@keyframes gt{0%{background-position:0%}100%{background-position:200%}}
+.hero-italic{font-style:italic;}
+.h1-sub{display:block;font-family:var(--fm);font-size:clamp(.52rem,2vw,.78rem);letter-spacing:.44em;text-transform:uppercase;color:var(--light);margin-bottom:16px;}
+.hero-sub{font-size:.95rem;color:var(--light);max-width:440px;margin:0 auto 30px;line-height:1.82;font-weight:300;}
+
+.hero-socials{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:26px;}
+.soc-btn{width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+  text-decoration:none;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  border-top-color:rgba(255,255,255,.18);backdrop-filter:blur(10px);
+  transition:transform .35s cubic-bezier(.23,1,.32,1),box-shadow .35s,border-color .35s;flex-shrink:0;}
+.soc-btn:hover{transform:translateY(-5px) scale(1.08);}
+.soc-yt:hover{border-color:rgba(255,0,0,.6);box-shadow:0 0 22px rgba(255,0,0,.45);}
+.soc-dc:hover{border-color:rgba(88,101,242,.6);box-shadow:0 0 22px rgba(88,101,242,.4);}
+.soc-ig:hover{border-color:rgba(225,48,108,.6);box-shadow:0 0 22px rgba(225,48,108,.4);}
+
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{padding:13px 30px;border-radius:7px;background:linear-gradient(135deg,var(--red),#8B0000);
+  color:#fff;font-family:var(--fm);font-weight:700;font-size:.65rem;letter-spacing:.16em;
+  text-decoration:none;display:inline-flex;align-items:center;gap:9px;text-transform:uppercase;
+  box-shadow:0 0 28px rgba(229,9,20,.35),0 4px 18px rgba(0,0,0,.5);
+  transition:all .4s cubic-bezier(.23,1,.32,1);min-height:48px;border:1px solid rgba(255,255,255,.1);}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 0 55px rgba(229,9,20,.55),0 16px 44px rgba(0,0,0,.5);}
+.btn-ghost{padding:13px 30px;border-radius:7px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-top-color:rgba(255,255,255,.22);
+  color:var(--light);font-family:var(--fm);font-weight:600;font-size:.65rem;letter-spacing:.16em;
+  text-decoration:none;display:inline-flex;align-items:center;gap:9px;text-transform:uppercase;
+  transition:all .35s;min-height:48px;}
+.btn-ghost:hover{border-color:rgba(184,130,26,.55);color:#fff;transform:translateY(-3px);box-shadow:0 0 20px rgba(184,130,26,.15);}
+
+.hero-stats{display:flex;gap:0;justify-content:center;flex-wrap:wrap;margin-top:44px;}
+.stat{padding:18px 30px;position:relative;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-top-color:rgba(255,255,255,.14);backdrop-filter:blur(16px);}
+.stat:first-child{border-radius:10px 0 0 10px;}.stat:last-child{border-radius:0 10px 10px 0;}
+.stat+.stat{border-left:none;}
+.stat-num{font-family:var(--fd);font-size:2rem;font-weight:700;background:linear-gradient(180deg,#fff,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-label{font-family:var(--fm);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:5px;}
+.stat-bar{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:40%;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:.5;}
+
+/* MARQUEE */
+.marquee-strip{position:relative;z-index:10;overflow:hidden;padding:11px 0;background:rgba(184,130,26,.02);border-top:1px solid rgba(184,130,26,.08);border-bottom:1px solid rgba(184,130,26,.08);}
+.marquee-track{display:flex;width:max-content;animation:mq 38s linear infinite;}
+.marquee-item{display:inline-flex;align-items:center;gap:22px;padding:0 30px;font-family:var(--fm);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(184,130,26,.45);white-space:nowrap;}
+.sep{color:rgba(184,130,26,.25);}
+@keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* SECTIONS */
+section{position:relative;z-index:10;padding:90px 24px;}
+.max-w{max-width:1200px;margin:0 auto;}
+.sec-pre{font-family:var(--fm);font-size:.58rem;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.sec-pre::before{content:'//';color:rgba(184,130,26,.5);}
+.sec-pre::after{content:'';flex:0 0 28px;height:1px;background:linear-gradient(to right,var(--gold),transparent);}
+.sec-h{font-family:var(--fd);font-size:clamp(1.8rem,5vw,3.6rem);font-weight:700;line-height:1.0;letter-spacing:.02em;}
+.sec-h em{font-style:italic;color:var(--gold);}
+.sec-desc{margin-top:14px;color:var(--light);font-size:.9rem;line-height:1.82;font-weight:300;max-width:500px;}
+
+/* GLASS CARD */
+.glass-card{background:linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-top-color:rgba(255,255,255,.18);border-left-color:rgba(255,255,255,.11);border-radius:20px;backdrop-filter:blur(18px) saturate(1.5);box-shadow:0 10px 36px rgba(0,0,0,.5),0 1px 0 rgba(255,255,255,.14) inset;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.23,1,.32,1),box-shadow .4s,border-color .35s;}
+.glass-card:hover{transform:translateY(-6px) scale(1.01);border-color:rgba(184,130,26,.3);box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 36px rgba(184,130,26,.08);}
+.card-topline{position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(to right,transparent,rgba(184,130,26,.9),transparent);opacity:0;transition:opacity .4s;z-index:2;}
+.glass-card:hover .card-topline{opacity:1;}
+
+/* DESTINATIONS */
+#destinations{background:var(--bg2);}
+.dest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px;}
+.dest-card{padding:32px 24px;position:relative;overflow:hidden;}
+.dest-card::before{content:'';position:absolute;top:0;left:0;width:0;height:100%;background:linear-gradient(to right,rgba(184,130,26,.06),transparent);transition:width .5s cubic-bezier(.23,1,.32,1);}
+.dest-card:hover::before{width:100%;}
+.dest-icon{font-size:2.2rem;margin-bottom:16px;display:block;filter:drop-shadow(0 0 6px rgba(184,130,26,.4));}
+.dest-name{font-family:var(--fd);font-weight:700;font-size:1.3rem;color:#fff;margin-bottom:6px;}
+.dest-tag{display:inline-block;font-family:var(--fm);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(184,130,26,.35);border-radius:3px;padding:3px 8px;margin-bottom:12px;background:rgba(184,130,26,.06);}
+.dest-body{color:var(--light);font-size:.84rem;line-height:1.75;font-weight:300;}
+
+/* ABOUT */
+#about{background:var(--bg);}
+.about-grid{display:grid;grid-template-columns:1fr 340px;gap:64px;align-items:center;}
+.about-text p{margin-top:16px;color:var(--light);font-size:.9rem;line-height:1.9;font-weight:300;}
+.about-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;}
+.creator-card{border:1px solid rgba(184,130,26,.25);border-top-color:rgba(184,130,26,.45);border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.015));backdrop-filter:blur(20px);overflow:hidden;box-shadow:var(--shadow-md);}
+.creator-card-top{background:rgba(0,0,0,.3);padding:28px;text-align:center;border-bottom:1px solid rgba(184,130,26,.15);}
+.creator-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--red),#600);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:2rem;border:2px solid rgba(229,9,20,.35);}
+.creator-name{font-family:var(--fd);font-weight:700;font-size:1.15rem;color:var(--gold);}
+.creator-handle{font-family:var(--fm);font-size:.55rem;letter-spacing:.1em;color:var(--light);margin-top:4px;}
+.creator-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(184,130,26,.1);}
+.creator-stat{padding:18px 12px;background:rgba(0,0,0,.3);text-align:center;}
+.creator-stat-num{font-family:var(--fd);font-weight:700;font-size:1.25rem;color:#fff;}
+.creator-stat-lbl{font-family:var(--fm);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+.creator-footer{padding:12px 18px;display:flex;align-items:center;gap:8px;}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;animation:blink 2.5s infinite;flex-shrink:0;}
+.creator-footer span{font-family:var(--fm);font-size:.55rem;letter-spacing:.08em;color:var(--muted);}
+
+/* VIDEOS */
+#videos{background:var(--bg2);}
+.videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px;}
+.video-card{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.07);border-top-color:rgba(255,255,255,.14);background:rgba(255,255,255,.03);backdrop-filter:blur(16px);transition:border-color .3s,transform .4s cubic-bezier(.23,1,.32,1),box-shadow .4s;}
+.video-card:hover{border-color:rgba(184,130,26,.4);transform:translateY(-6px) scale(1.01);box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 32px rgba(184,130,26,.07);}
+.video-thumb{height:168px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;}
+.video-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,2,10,.9));}
+.play-btn{position:absolute;width:44px;height:44px;border-radius:50%;background:rgba(229,9,20,.9);display:flex;align-items:center;justify-content:center;z-index:2;transition:transform .2s,box-shadow .2s;box-shadow:0 0 16px rgba(229,9,20,.5);}
+.video-card:hover .play-btn{transform:scale(1.12);box-shadow:0 0 28px rgba(229,9,20,.7);}
+.play-btn svg{width:14px;height:14px;fill:#fff;margin-left:2px;}
+.vbadge{position:absolute;top:10px;left:10px;z-index:3;font-family:var(--fm);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;background:rgba(0,0,0,.75);border:1px solid rgba(184,130,26,.4);color:var(--gold);}
+.video-body{padding:18px;}
+.video-title{font-family:var(--fd);font-weight:700;font-size:1.05rem;color:#fff;margin-bottom:6px;}
+.video-desc{color:var(--light);font-size:.8rem;line-height:1.62;font-weight:300;margin-bottom:12px;}
+.video-meta{display:flex;justify-content:space-between;align-items:center;}
+.video-meta-l{font-family:var(--fm);font-size:.54rem;letter-spacing:.08em;color:var(--muted);}
+.video-loc{font-family:var(--fd);font-size:.78rem;color:var(--gold);}
+
+/* STAYS */
+#stays{background:var(--bg);}
+.stays-divider{display:flex;align-items:center;gap:16px;margin:48px 0 28px;}
+.stays-divider-line{flex:1;height:1px;background:rgba(184,130,26,.15);}
+.stays-divider-label{font-family:var(--fm);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);white-space:nowrap;}
+
+.best-stay-card{border:1px solid rgba(184,130,26,.3);border-top-color:rgba(184,130,26,.55);border-radius:18px;background:rgba(255,255,255,.03);backdrop-filter:blur(18px);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;margin-bottom:20px;transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;}
+.best-stay-card:hover{border-color:rgba(184,130,26,.6);transform:translateY(-4px);box-shadow:var(--shadow-md);}
+.best-stay-badge{position:absolute;top:18px;left:18px;z-index:5;background:var(--gold);color:#000;font-family:var(--fm);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:4px;font-weight:700;}
+.best-stay-img{position:relative;overflow:hidden;min-height:280px;}
+.best-stay-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s;}
+.best-stay-card:hover .best-stay-img img{transform:scale(1.04);}
+.best-stay-info{padding:36px 32px;display:flex;flex-direction:column;justify-content:center;}
+.stay-type-tag{font-family:var(--fm);font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.stay-type-tag::before{content:'';width:18px;height:1px;background:var(--gold);display:inline-block;}
+.stay-name{font-family:var(--fd);font-weight:700;font-size:1.7rem;line-height:1.1;color:#fff;margin-bottom:8px;}
+.stay-location{font-family:var(--fm);font-size:.58rem;letter-spacing:.1em;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:6px;}
+.stay-desc{color:var(--light);font-size:.86rem;line-height:1.8;font-weight:300;margin-bottom:18px;}
+.stay-features{display:flex;gap:7px;flex-wrap:wrap;}
+.stay-feat{font-family:var(--fm);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--light);border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:3px 9px;}
+
+.hotels-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:16px;}
+.hotel-card{border:1px solid rgba(255,255,255,.08);border-top-color:rgba(255,255,255,.16);border-radius:14px;background:rgba(255,255,255,.03);backdrop-filter:blur(14px);overflow:hidden;transition:border-color .3s,transform .35s,box-shadow .35s;}
+.hotel-card:hover{border-color:rgba(184,130,26,.4);transform:translateY(-5px);box-shadow:var(--shadow-md);}
+.hotel-img{height:180px;overflow:hidden;position:relative;}
+.hotel-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
+.hotel-card:hover .hotel-img img{transform:scale(1.05);}
+.hotel-img-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;background:rgba(255,255,255,.03);}
+.hotel-body{padding:20px;}
+.hotel-brand{font-family:var(--fm);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.hotel-name{font-family:var(--fd);font-weight:700;font-size:1.1rem;color:#fff;line-height:1.2;margin-bottom:8px;}
+.hotel-loc{font-size:.78rem;color:var(--light);font-weight:400;display:flex;align-items:center;gap:5px;margin-bottom:10px;}
+.hotel-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.hotel-tag{font-family:var(--fm);font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(255,255,255,.07);border-radius:3px;padding:3px 7px;}
+
+.sinq-card{border:1px solid rgba(184,130,26,.25);border-top-color:rgba(184,130,26,.45);border-radius:14px;background:rgba(255,255,255,.03);backdrop-filter:blur(14px);overflow:hidden;display:grid;grid-template-columns:260px 1fr;transition:border-color .3s,transform .35s;}
+.sinq-card:hover{border-color:rgba(184,130,26,.55);transform:translateY(-4px);}
+.sinq-img{overflow:hidden;min-height:200px;position:relative;}
+.sinq-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
+.sinq-card:hover .sinq-img img{transform:scale(1.05);}
+.sinq-body{padding:28px 26px;display:flex;flex-direction:column;justify-content:center;}
+.sinq-type{font-family:var(--fm);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.sinq-name{font-family:var(--fd);font-weight:700;font-size:1.4rem;color:#fff;margin-bottom:6px;}
+.sinq-loc{font-size:.78rem;color:var(--light);margin-bottom:12px;display:flex;align-items:center;gap:5px;}
+.sinq-desc{color:var(--light);font-size:.83rem;line-height:1.75;font-weight:300;}
+
+/* COMMUNITY */
+#community{background:var(--bg2);}
+.community-inner{background:linear-gradient(135deg,rgba(184,130,26,.07),rgba(192,90,42,.04));border:1px solid rgba(184,130,26,.2);border-top-color:rgba(184,130,26,.4);border-radius:20px;padding:60px 70px;display:flex;align-items:flex-start;justify-content:space-between;gap:48px;position:relative;overflow:hidden;backdrop-filter:blur(20px);box-shadow:0 36px 90px rgba(0,0,0,.6);}
+.community-inner::before{content:'';position:absolute;top:-30%;right:-10%;width:480px;height:480px;background:radial-gradient(circle,rgba(184,130,26,.1),transparent 65%);pointer-events:none;}
+.comm-text h2{font-family:var(--fd);font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;letter-spacing:.02em;line-height:1.05;}
+.comm-text h2 em{font-style:italic;color:var(--gold);}
+.comm-text p{margin-top:16px;color:var(--light);font-size:.88rem;max-width:380px;line-height:1.78;font-weight:300;}
+.sop-panel{position:relative;z-index:2;flex-shrink:0;background:rgba(0,0,0,.5);border:1px solid rgba(184,130,26,.2);border-top-color:rgba(184,130,26,.4);border-radius:14px;min-width:285px;max-width:300px;overflow:hidden;backdrop-filter:blur(16px);box-shadow:0 20px 50px rgba(0,0,0,.6);}
+.sop-bar{background:rgba(0,0,0,.6);padding:11px 15px;display:flex;align-items:center;gap:9px;border-bottom:1px solid rgba(184,130,26,.12);}
+.sop-dots{display:flex;gap:5px;}
+.sop-dot{width:10px;height:10px;border-radius:50%;}
+.sop-chan{font-family:var(--fm);font-weight:700;font-size:.65rem;letter-spacing:.1em;color:var(--light);display:flex;align-items:center;gap:5px;}
+.sop-body{padding:14px;}
+.sop-sec-lbl{font-family:var(--fm);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.sop-row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;margin-bottom:3px;transition:background .2s;}
+.sop-row:hover{background:rgba(255,255,255,.04);}
+.sop-av{width:33px;height:33px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;border:2px solid transparent;position:relative;}
+.sop-av::after{content:'';position:absolute;bottom:-1px;right:-1px;width:10px;height:10px;background:#22c55e;border-radius:50%;border:2px solid var(--bg2);}
+.sop-info{flex:1;min-width:0;}
+.sop-name{font-family:var(--fm);font-weight:700;font-size:.72rem;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sop-role{font-family:var(--fm);font-size:.5rem;letter-spacing:.08em;margin-top:2px;display:flex;align-items:center;gap:4px;}
+.sop-rdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.sop-foot{padding:10px 14px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:7px;font-family:var(--fm);font-size:.54rem;color:var(--muted);}
+
+/* TOP RANKING VLOGS */
+#top-vlogs{background:var(--bg3);}
+.vlogs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:56px;}
+.vlog-embed-card{border:1px solid rgba(184,130,26,.25);border-top-color:rgba(184,130,26,.5);border-radius:18px;overflow:hidden;background:rgba(255,255,255,.03);backdrop-filter:blur(16px);transition:border-color .3s,transform .4s cubic-bezier(.23,1,.32,1),box-shadow .4s;}
+.vlog-embed-card:hover{border-color:rgba(184,130,26,.6);transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 40px rgba(184,130,26,.08);}
+.vlog-thumb-wrap{position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;}
+.vlog-thumb-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;display:block;}
+.vlog-card-body{padding:18px 20px 22px;}
+.vlog-card-title{font-family:var(--fd);font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:6px;}
+.vlog-card-meta{font-family:var(--fm);font-size:.54rem;letter-spacing:.1em;color:var(--gold);}
+
+/* FOOTER */
+footer{position:relative;z-index:10;padding:55px 24px 38px;background:rgba(0,0,0,.8);border-top:1px solid rgba(255,255,255,.05);}
+footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),var(--rust),var(--gold),transparent);opacity:.4;}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:38px;max-width:1200px;margin:0 auto 40px;}
+.footer-brand p{color:rgba(255,255,255,.35);font-size:.8rem;margin-top:12px;line-height:1.7;max-width:210px;font-weight:300;}
+.footer-col h4{font-family:var(--fm);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--light);margin-bottom:14px;}
+.footer-col a{display:block;color:rgba(255,255,255,.35);text-decoration:none;font-size:.8rem;margin-bottom:9px;transition:color .22s;}
+.footer-col a:hover{color:var(--gold);}
+.footer-socials{display:flex;gap:9px;margin-top:16px;}
+.footer-soc{width:38px;height:38px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:border-color .2s,transform .2s;}
+.footer-soc:hover{transform:translateY(-2px);border-color:rgba(184,130,26,.5);}
+.footer-bottom{max-width:1200px;margin:0 auto;padding-top:22px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-copy{font-family:var(--fm);font-size:.58rem;letter-spacing:.08em;color:rgba(255,255,255,.25);}
+.footer-links{display:flex;gap:18px;}
+.footer-links a{font-family:var(--fm);font-size:.56rem;letter-spacing:.06em;text-decoration:none;color:rgba(255,255,255,.25);transition:color .2s;}
+.footer-links a:hover{color:var(--gold);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .75s cubic-bezier(.23,1,.32,1),transform .75s cubic-bezier(.23,1,.32,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.07s}.rd2{transition-delay:.14s}.rd3{transition-delay:.22s}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--gold),var(--rust));border-radius:2px;}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .footer-grid{grid-template-columns:1fr 1fr}
+  section{padding:80px 24px}
+  .about-grid{grid-template-columns:1fr}
+  .creator-card{max-width:400px}
+  .best-stay-card{grid-template-columns:1fr}
+  .best-stay-img{min-height:220px}
+  .community-inner{padding:40px 32px;gap:28px}
+}
+@media(max-width:768px){
+  :root{--nav-h:60px}
+  nav{padding:0 18px}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  section{padding:64px 16px}
+  .hero{padding:calc(var(--nav-h)+68px) 16px 44px}
+  .hero h1{font-size:clamp(2.8rem,13vw,4.5rem)}
+  .hr1,.hr2,.hr3{display:none}
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:100%;max-width:320px}
+  .stat{border-radius:0!important;border:1px solid rgba(255,255,255,.07)!important}
+  .stat:nth-child(1){border-radius:10px 0 0 0!important}
+  .stat:nth-child(2){border-radius:0 10px 0 0!important}
+  .stat:nth-child(3){border-radius:0 0 0 10px!important}
+  .stat:nth-child(4){border-radius:0 0 10px 0!important}
+  .dest-grid{grid-template-columns:1fr;gap:10px}
+  .videos-grid{grid-template-columns:1fr}
+  .hotels-grid{grid-template-columns:1fr}
+  .sinq-card{grid-template-columns:1fr}
+  .sinq-img{min-height:170px}
+  .community-inner{flex-direction:column;align-items:center;text-align:center;padding:26px 18px}
+  .comm-text p{max-width:100%}
+  .sop-panel{min-width:0;width:100%;max-width:100%}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-brand{grid-column:1/-1}
+  .vlogs-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .hero-btns{flex-direction:column;align-items:stretch;text-align:center}
+  .btn-primary,.btn-ghost{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════
+     YOUTUBE INTRO
+══════════════════════ -->
+<div id="yt-intro">
+  <div id="yt-phase1" class="yt-logo-wrap" style="display:flex;">
+    <div class="yt-icon-part" id="yt-icon">
+      <svg width="80" height="56" viewBox="0 0 159.1 111.1" xmlns="http://www.w3.org/2000/svg">
+        <path d="M154.8 17.5c-1.8-6.8-7.1-12.1-13.9-13.9C128.8.6 79.6.6 79.6.6S30.3.6 18.2 3.6C11.4 5.4 6.1 10.7 4.3 17.5.9 29.8.9 55.5.9 55.5s0 25.7 3.4 37.9c1.8 6.8 7.1 11.9 13.9 13.7C30.3 110.2 79.6 110.2 79.6 110.2s49.2 0 61.3-3C148 105.4 153.3 100.1 155.1 93.3c3.4-12.2 3.4-37.9 3.4-37.9s0-25.7-3.7-37.9z" fill="#FF0000"/>
+        <polygon points="63.6,79 104.5,55.5 63.6,32 " fill="#FFFFFF"/>
+      </svg>
+    </div>
+    <div class="yt-text-part" id="yt-text">YouTube</div>
+  </div>
+
+  <div id="yt-combined" class="yt-combined" style="display:none;">
+    <svg width="44" height="31" viewBox="0 0 159.1 111.1" xmlns="http://www.w3.org/2000/svg">
+      <path d="M154.8 17.5c-1.8-6.8-7.1-12.1-13.9-13.9C128.8.6 79.6.6 79.6.6S30.3.6 18.2 3.6C11.4 5.4 6.1 10.7 4.3 17.5.9 29.8.9 55.5.9 55.5s0 25.7 3.4 37.9c1.8 6.8 7.1 11.9 13.9 13.7C30.3 110.2 79.6 110.2 79.6 110.2s49.2 0 61.3-3C148 105.4 153.3 100.1 155.1 93.3c3.4-12.2 3.4-37.9 3.4-37.9s0-25.7-3.7-37.9z" fill="#FF0000"/>
+      <polygon points="63.6,79 104.5,55.5 63.6,32 " fill="#FFFFFF"/>
+    </svg>
+    <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:clamp(22px,4.5vw,46px);color:#fff;letter-spacing:-0.5px;">YouTube</span>
+  </div>
+
+  <div class="yt-tagline" id="yt-tagline">
+    The Goan Explorer
+    <div class="yt-tagline-under"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════
+     BACKGROUNDS
+══════════════════════ -->
+<canvas id="bg-canvas"></canvas>
+<div class="aurora">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+<div class="grid-overlay"></div>
+
+<!-- ══════════════════════
+     MAIN SITE
+══════════════════════ -->
+<div id="mainSite">
+
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-icon">
+      <svg viewBox="0 0 159.1 111.1"><path d="M154.8 17.5c-1.8-6.8-7.1-12.1-13.9-13.9C128.8.6 79.6.6 79.6.6S30.3.6 18.2 3.6C11.4 5.4 6.1 10.7 4.3 17.5.9 29.8.9 55.5.9 55.5s0 25.7 3.4 37.9c1.8 6.8 7.1 11.9 13.9 13.7C30.3 110.2 79.6 110.2 79.6 110.2s49.2 0 61.3-3C148 105.4 153.3 100.1 155.1 93.3c3.4-12.2 3.4-37.9 3.4-37.9s0-25.7-3.7-37.9z" fill="#fff"/><polygon points="63.6,79 104.5,55.5 63.6,32" fill="#FF0000"/></svg>
+    </div>
+    <span class="logo-text">Goan Explorer</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#destinations">Destinations</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="#stays">Stays</a></li>
+    <li><a href="#community">Community</a></li>
+    <li>
+      <a href="https://www.youtube.com/@Goan_Explorer" target="_blank" class="nav-cta">
+        <svg width="14" height="10" viewBox="0 0 576 512" fill="currentColor"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+        Subscribe
+      </a>
+    </li>
+  </ul>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#destinations" class="mob-link">Destinations</a></li>
+    <li><a href="#about" class="mob-link">About</a></li>
+    <li><a href="#videos" class="mob-link">Videos</a></li>
+    <li><a href="#stays" class="mob-link">Stays & Hotels</a></li>
+    <li><a href="#community" class="mob-link">Community</a></li>
+  </ul>
+  <a href="https://www.youtube.com/@Goan_Explorer" target="_blank" class="m-yt">
+    <svg width="16" height="12" viewBox="0 0 576 512" fill="currentColor"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+    Subscribe on YouTube
+  </a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ring hr1"></div>
+  <div class="hero-ring hr2"></div>
+  <div class="hero-ring hr3"></div>
+  <div class="hero-corner hc-tl"></div>
+  <div class="hero-corner hc-tr"></div>
+  <div class="hero-corner hc-bl"></div>
+  <div class="hero-corner hc-br"></div>
+
+  <div class="hero-eyebrow"><span class="live-dot"></span>Travel Vlog &nbsp;·&nbsp; Goa & India</div>
+  <h1><span class="gradient-text hero-italic">Goan</span><br><span class="gradient-text">Explorer</span></h1>
+  <span class="h1-sub">Beaches · Forts · Temples · Culture</span>
+  <p class="hero-sub">From the sun-soaked shores of Goa to the ancient forts of Maharashtra — raw India, real stories, no filter.</p>
+
+  <div class="hero-socials">
+    <a class="soc-btn soc-dc" href="https://discord.gg/7cJFkycm" target="_blank" aria-label="Discord">
+      <svg width="22" height="17" viewBox="0 0 71 55" fill="#5865F2"><path d="M60.1 4.9A58.6 58.6 0 0 0 45.6.5a40.7 40.7 0 0 0-1.8 3.7 54.2 54.2 0 0 0-16.4 0A38.2 38.2 0 0 0 25.6.5 58.5 58.5 0 0 0 11 4.9C1.6 19.2-1 33.1.3 46.8a59.2 59.2 0 0 0 18.1 9.2 44 44 0 0 0 3.8-6.2 38.3 38.3 0 0 1-6-2.9l1.5-1.1a42.3 42.3 0 0 0 36.3 0l1.5 1.1a38.4 38.4 0 0 1-6 2.9 43.8 43.8 0 0 0 3.8 6.2 59 59 0 0 0 18.1-9.2c1.5-15.8-2.6-29.6-10.3-41.8ZM23.7 38.3c-3.6 0-6.5-3.3-6.5-7.4s2.8-7.4 6.5-7.4 6.5 3.3 6.5 7.4-2.9 7.4-6.5 7.4Zm23.6 0c-3.6 0-6.5-3.3-6.5-7.4s2.8-7.4 6.5-7.4 6.5 3.3 6.5 7.4-2.9 7.4-6.5 7.4Z"/></svg>
+    </a>
+    <a class="soc-btn soc-yt" href="https://www.youtube.com/@Goan_Explorer" target="_blank" aria-label="YouTube">
+      <svg width="24" height="17" viewBox="0 0 576 512" fill="#FF0000"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+    </a>
+    <a class="soc-btn soc-ig" href="https://www.instagram.com/aryan_studio_818" target="_blank" aria-label="Instagram">
+      <svg width="20" height="20" viewBox="0 0 448 512"><defs><linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="50%" stop-color="#dc2743"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><path fill="url(#ig)" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+    </a>
+  </div>
+
+  <div class="hero-btns">
+    <a href="https://www.youtube.com/@Goan_Explorer" target="_blank" class="btn-primary">
+      <svg width="14" height="10" viewBox="0 0 576 512" fill="currentColor"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+      Watch on YouTube
+    </a>
+    <a href="#destinations" class="btn-ghost">Explore Destinations →</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Vlogs</div><div class="stat-bar"></div></div>
+    <div class="stat"><div class="stat-num">6+</div><div class="stat-label">Stays</div><div class="stat-bar"></div></div>
+    <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Locations</div><div class="stat-bar"></div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Memories</div><div class="stat-bar"></div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="marquee-item">Goan Explorer <span class="sep">✦</span> Goa Beaches <span class="sep">✦</span> Maharashtra Forts <span class="sep">✦</span> Madhya Pradesh Temples <span class="sep">✦</span> Real Travel Vlogs <span class="sep">✦</span> No Filter India <span class="sep">✦</span> Subscribe Now <span class="sep">✦</span> New Vlogs Weekly <span class="sep">✦</span></div>
+    <div class="marquee-item">Goan Explorer <span class="sep">✦</span> Goa Beaches <span class="sep">✦</span> Maharashtra Forts <span class="sep">✦</span> Madhya Pradesh Temples <span class="sep">✦</span> Real Travel Vlogs <span class="sep">✦</span> No Filter India <span class="sep">✦</span> Subscribe Now <span class="sep">✦</span> New Vlogs Weekly <span class="sep">✦</span></div>
+  </div>
+</div>
+
+<!-- DESTINATIONS -->
+<section id="destinations">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="sec-pre">Places Covered</div>
+      <h2 class="sec-h">Destinations</h2>
+      <p class="sec-desc">Raw, honest travel across India's most breathtaking landscapes — see them all on the channel.</p>
+    </div>
+    <div class="dest-grid" style="margin-top:48px;">
+      <div class="glass-card dest-card reveal rd1"><div class="card-topline"></div><span class="dest-icon">🏖️</span><div class="dest-name">Goa</div><div class="dest-tag">Most Featured</div><p class="dest-body">Sun-kissed beaches, Portuguese architecture, shack culture, and hidden coves. The heart of this channel in its most raw form.</p></div>
+      <div class="glass-card dest-card reveal rd2"><div class="card-topline"></div><span class="dest-icon">🏯</span><div class="dest-name">Maharashtra</div><div class="dest-tag">Forts & Culture</div><p class="dest-body">Sahyadri mountain forts, the bustling streets of Mumbai, and the quiet ghats of Nashik. A state of contrasts and deep history.</p></div>
+      <div class="glass-card dest-card reveal rd3"><div class="card-topline"></div><span class="dest-icon">🛕</span><div class="dest-name">Madhya Pradesh</div><div class="dest-tag">Hidden Gem</div><p class="dest-body">Ancient temples, wildlife safaris, Khajuraho sculptures, and the sacred Narmada ghats — India at its most timeless.</p></div>
+      <div class="glass-card dest-card reveal rd1"><div class="card-topline"></div><span class="dest-icon">🌊</span><div class="dest-name">Coastal Karnataka</div><div class="dest-tag">Explored</div><p class="dest-body">Udupi temples, Gokarna beaches, and the Malpe seafront. Spiritual energy and stunning seascapes in equal measure.</p></div>
+      <div class="glass-card dest-card reveal rd2"><div class="card-topline"></div><span class="dest-icon">🏔️</span><div class="dest-name">Western Ghats</div><div class="dest-tag">Trekking</div><p class="dest-body">Waterfalls, misty peaks, and dense forests. Every trek through these ranges reveals something no guidebook can prepare you for.</p></div>
+      <div class="glass-card dest-card reveal rd3"><div class="card-topline"></div><span class="dest-icon">🗺️</span><div class="dest-name">More Coming</div><div class="dest-tag">Stay Tuned</div><p class="dest-body">New destinations always on the horizon. Subscribe to be the first to know where the journey takes us next.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="max-w">
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <div class="sec-pre">The Story</div>
+        <h2 class="sec-h">Real journeys.<br><em>Real India.</em></h2>
+        <p>Hey, I'm Aryan — a creator from Goa who believes the best stories are found on roads less taken. I started this channel to capture India's incredible diversity: the smell of the sea at Goa's hidden beaches, the echo of history inside Maharashtra's hilltop forts, and the silence of Madhya Pradesh's ancient temples at dawn.</p>
+        <p style="margin-top:12px">No scripts. No staged shots. Just honest, passionate travel — documented for everyone who wants to feel right there alongside me.</p>
+        <div class="about-btns">
+          <a href="https://www.youtube.com/@Goan_Explorer" target="_blank" class="btn-primary">Subscribe on YouTube</a>
+          <a href="https://discord.gg/7cJFkycm" target="_blank" class="btn-ghost">Join Community →</a>
+        </div>
+      </div>
+      <div class="creator-card">
+        <div class="creator-card-top">
+          <div class="creator-avatar">🌊</div>
+          <div class="creator-name">Aryan</div>
+          <div class="creator-handle">@Goan_Explorer · @aryan_studio_818</div>
+        </div>
+        <div class="creator-stats">
+          <div class="creator-stat"><div class="creator-stat-num">50+</div><div class="creator-stat-lbl">Videos</div></div>
+          <div class="creator-stat"><div class="creator-stat-num">6+</div><div class="creator-stat-lbl">Stays</div></div>
+          <div class="creator-stat"><div class="creator-stat-num">100+</div><div class="creator-stat-lbl">Spots</div></div>
+        </div>
+        <div class="creator-footer"><div class="pulse-dot"></div><span>Channel active · New uploads weekly</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="sec-pre">On the Channel</div>
+      <h2 class="sec-h">What to watch</h2>
+    </div>
+    <div class="videos-grid">
+      <div class="video-card reveal rd1">
+        <div class="video-thumb" style="background:linear-gradient(135deg,rgba(30,20,0,.8),rgba(60,40,10,.6))">🏖️
+          <div class="play-btn"><svg viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></div>
+          <span class="vbadge">Fan Fave</span>
+        </div>
+        <div class="video-body"><div class="video-title">Hidden Beaches of Goa</div><p class="video-desc">Beyond Baga and Calangute — secret coves, hidden lagoons, and beaches locals actually love.</p><div class="video-meta"><span class="video-meta-l">Travel Vlog · Goa</span><span class="video-loc">📍 Goa</span></div></div>
+      </div>
+      <div class="video-card reveal rd2">
+        <div class="video-thumb" style="background:linear-gradient(135deg,rgba(20,10,0,.8),rgba(50,30,5,.6))">🏯
+          <div class="play-btn"><svg viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></div>
+          <span class="vbadge">Epic</span>
+        </div>
+        <div class="video-body"><div class="video-title">Maharashtra Fort Treks</div><p class="video-desc">Climbing ancient Maratha forts in the Sahyadri mountains — history, adventure, and jaw-dropping views.</p><div class="video-meta"><span class="video-meta-l">Travel Vlog · Maharashtra</span><span class="video-loc">📍 Maharashtra</span></div></div>
+      </div>
+      <div class="video-card reveal rd3">
+        <div class="video-thumb" style="background:linear-gradient(135deg,rgba(15,10,5,.8),rgba(40,25,10,.6))">🛕
+          <div class="play-btn"><svg viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></div>
+          <span class="vbadge">Spiritual</span>
+        </div>
+        <div class="video-body"><div class="video-title">Madhya Pradesh Temples</div><p class="video-desc">Khajuraho's UNESCO sculptures to the sacred Mahakaleshwar jyotirlinga — MP at its most timeless.</p><div class="video-meta"><span class="video-meta-l">Travel Vlog · MP</span><span class="video-loc">📍 Madhya Pradesh</span></div></div>
+      </div>
+      <div class="video-card reveal rd1">
+        <div class="video-thumb" style="background:linear-gradient(135deg,rgba(0,15,20,.8),rgba(5,30,40,.6))">🌊
+          <div class="play-btn"><svg viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></div>
+          <span class="vbadge">Scenic</span>
+        </div>
+        <div class="video-body"><div class="video-title">Konkan Coastal Drive</div><p class="video-desc">Driving the legendary Konkan coast — every bend reveals another postcard stretch of the Arabian Sea.</p><div class="video-meta"><span class="video-meta-l">Road Trip · Konkan</span><span class="video-loc">📍 Konkan Coast</span></div></div>
+      </div>
+      <div class="video-card reveal rd2">
+        <div class="video-thumb" style="background:linear-gradient(135deg,rgba(30,15,0,.8),rgba(60,35,5,.6))">🍛
+          <div class="play-btn"><svg viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></div>
+          <span class="vbadge">Food</span>
+        </div>
+        <div class="video-body"><div class="video-title">Goan Food Culture</div><p class="video-desc">Fish curry rice, bebinca, feni, and the best xacuti — Goan cuisine from beach shacks to family kitchens.</p><div class="video-meta"><span class="video-meta-l">Food Vlog · Goa</span><span class="video-loc">📍 Goa</span></div></div>
+      </div>
+      <div class="video-card reveal rd3">
+        <div class="video-thumb" style="background:linear-gradient(135deg,rgba(0,15,5,.8),rgba(5,30,10,.6))">🐯
+          <div class="play-btn"><svg viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></div>
+          <span class="vbadge">Wildlife</span>
+        </div>
+        <div class="video-body"><div class="video-title">Kanha Wildlife Safari</div><p class="video-desc">Into the wild heart of Madhya Pradesh. Tracking tigers at Kanha National Park — India at its most primal.</p><div class="video-meta"><span class="video-meta-l">Wildlife · MP</span><span class="video-loc">📍 Kanha, MP</span></div></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a href="https://www.youtube.com/@Goan_Explorer" target="_blank" class="btn-primary">View All Videos on YouTube ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- STAYS -->
+<section id="stays">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="sec-pre">Where We Stayed</div>
+      <h2 class="sec-h">Hotels & <em>Stays</em> Covered</h2>
+      <p class="sec-desc">Every property personally stayed at and filmed. Click any card to discover them on the channel.</p>
+    </div>
+
+    <div class="stays-divider reveal"><div class="stays-divider-line"></div><div class="stays-divider-label">⭐ Best Stay So Far</div><div class="stays-divider-line"></div></div>
+    <div class="best-stay-card reveal">
+      <div class="best-stay-badge">Best Pick</div>
+      <div class="best-stay-img">
+        <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800&q=80" alt="Grandiose Apartments" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'hotel-img-fallback\'>🏠</div>'"/>
+      </div>
+      <div class="best-stay-info">
+        <div class="stay-type-tag">Airbnb · Private Apartment</div>
+        <div class="stay-name">Grandiose Apartments</div>
+        <div class="stay-location"><svg width="11" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Arpora, North Goa</div>
+        <p class="stay-desc">The standout stay of the entire journey. Nestled in the lush village of Arpora in North Goa, this private apartment offered the perfect balance of comfort, privacy, and proximity to Goa's best beaches and nightlife.</p>
+        <div class="stay-features"><span class="stay-feat">North Goa</span><span class="stay-feat">Private</span><span class="stay-feat">Fully Furnished</span><span class="stay-feat">Best Value</span></div>
+      </div>
+    </div>
+
+    <div class="stays-divider reveal"><div class="stays-divider-line"></div><div class="stays-divider-label">Club Mahindra Resorts</div><div class="stays-divider-line"></div></div>
+    <div class="hotels-grid reveal">
+      <div class="hotel-card">
+        <div class="hotel-img"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=700&q=80" alt="Club Mahindra Varca" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'hotel-img-fallback\'>🏨</div>'"/></div>
+        <div class="hotel-body"><div class="hotel-brand">Club Mahindra</div><div class="hotel-name">Varca Beach Resort</div><div class="hotel-loc">📍 Varca, South Goa</div><div class="hotel-tags"><span class="hotel-tag">Beachfront</span><span class="hotel-tag">Resort</span><span class="hotel-tag">South Goa</span></div></div>
+      </div>
+      <div class="hotel-card">
+        <div class="hotel-img"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=700&q=80" alt="Club Mahindra Emerald Palms" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'hotel-img-fallback\'>🌴</div>'"/></div>
+        <div class="hotel-body"><div class="hotel-brand">Club Mahindra</div><div class="hotel-name">Emerald Palms</div><div class="hotel-loc">📍 Varca, South Goa</div><div class="hotel-tags"><span class="hotel-tag">Lush Grounds</span><span class="hotel-tag">Pools</span></div></div>
+      </div>
+    </div>
+
+    <div class="stays-divider reveal"><div class="stays-divider-line"></div><div class="stays-divider-label">Karma Royal Collection</div><div class="stays-divider-line"></div></div>
+    <div class="hotels-grid reveal">
+      <div class="hotel-card">
+        <div class="hotel-img"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=80" alt="Karma Royal Monterio" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'hotel-img-fallback\'>🏡</div>'"/></div>
+        <div class="hotel-body"><div class="hotel-brand">Karma Royal</div><div class="hotel-name">Monterio</div><div class="hotel-loc">📍 Candolim, North Goa</div><div class="hotel-tags"><span class="hotel-tag">Boutique</span><span class="hotel-tag">Portuguese Heritage</span></div></div>
+      </div>
+      <div class="hotel-card">
+        <div class="hotel-img"><img src="https://images.unsplash.com/photo-1615460549969-36fa19521a4f?w=700&q=80" alt="Karma Royal Palms" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'hotel-img-fallback\'>🌿</div>'"/></div>
+        <div class="hotel-body"><div class="hotel-brand">Karma Royal</div><div class="hotel-name">Palms</div><div class="hotel-loc">📍 Candolim, North Goa</div><div class="hotel-tags"><span class="hotel-tag">Tropical Garden</span><span class="hotel-tag">Villas</span></div></div>
+      </div>
+    </div>
+
+    <div class="stays-divider reveal"><div class="stays-divider-line"></div><div class="stays-divider-label">Nightlife & Entertainment</div><div class="stays-divider-line"></div></div>
+    <div class="sinq-card reveal">
+      <div class="sinq-img"><img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80" alt="SinQ Night Club" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;background:rgba(255,255,255,.03)\'>🎶</div>'"/></div>
+      <div class="sinq-body"><div class="sinq-type">Night Club · Entertainment Venue</div><div class="sinq-name">SinQ Night Club</div><div class="sinq-loc">📍 Calangute, North Goa</div><p class="sinq-desc">One of Goa's most iconic entertainment venues. SinQ brings together world-class DJs, stunning pool parties, and an electric atmosphere that defines Goa's legendary nightlife.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section id="community">
+  <div class="max-w">
+    <div class="community-inner reveal">
+      <div class="comm-text">
+        <div class="sec-pre">Join the Journey</div>
+        <h2>More than travel.<br>A community of <em>explorers.</em></h2>
+        <p>Fellow travel lovers, wanderlusters, and curious souls — this community is for you. Share trip tips, plan routes together, and be part of every journey before it goes live.</p>
+        <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="https://discord.gg/7cJFkycm" target="_blank" class="btn-primary">Join Discord</a>
+          <a href="https://www.instagram.com/aryan_studio_818" target="_blank" class="btn-ghost">Follow on Instagram →</a>
+        </div>
+      </div>
+      <div class="sop-panel">
+        <div class="sop-bar">
+          <div class="sop-dots">
+            <div class="sop-dot" style="background:#ff5f57"></div>
+            <div class="sop-dot" style="background:#febc2e"></div>
+            <div class="sop-dot" style="background:#28c840"></div>
+          </div>
+          <div class="sop-chan">Channel & Socials</div>
+        </div>
+        <div class="sop-body">
+          <div class="sop-sec-lbl">— Creator Team —</div>
+          <div class="sop-row">
+            <div class="sop-av" style="background:linear-gradient(135deg,rgba(229,9,20,.25),rgba(180,0,0,.1));border-color:rgba(229,9,20,.4);">🌊</div>
+            <div class="sop-info">
+              <div class="sop-name" style="color:#f5a623;">Aryan</div>
+              <div class="sop-role"><div class="sop-rdot" style="background:#f5a623;"></div><span style="color:#f5a623;">Creator · Goan Explorer</span></div>
+            </div>
+          </div>
+          <div class="sop-row">
+            <div class="sop-av" style="background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(0,229,255,.1));border-color:rgba(34,197,94,.35);">💻</div>
+            <div class="sop-info">
+              <div class="sop-name" style="color:#4ade80;">Aryan Studio 818</div>
+              <div class="sop-role"><div class="sop-rdot" style="background:#4ade80;"></div><span style="color:#4ade80;">Web Developer</span></div>
+            </div>
+          </div>
+          <div class="sop-row">
+            <div class="sop-av" style="background:linear-gradient(135deg,rgba(229,9,20,.2),rgba(150,0,0,.1));border-color:rgba(229,9,20,.3);">📹</div>
+            <div class="sop-info">
+              <div class="sop-name" style="color:#ff6b6b;">YouTube Channel</div>
+              <div class="sop-role"><div class="sop-rdot" style="background:#ff6b6b;"></div><span style="color:#ff6b6b;">@Goan_Explorer</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="sop-foot"><div class="pulse-dot"></div>Channel active · Uploading weekly</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP RANKING VLOGS -->
+<section id="top-vlogs">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="sec-pre">Must Watch</div>
+      <h2 class="sec-h">Top Ranking <em>Vlogs</em></h2>
+      <p class="sec-desc">The most-watched episodes from the channel — raw, real, and worth every minute.</p>
+    </div>
+    <div class="vlogs-grid">
+      <div class="vlog-embed-card reveal rd1">
+        <div class="vlog-thumb-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/Tx-dmbPHffU"
+            title="Goan Explorer Vlog 1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+        <div class="vlog-card-body">
+          <div class="vlog-card-title">Goan Explorer — Featured Vlog</div>
+          <div class="vlog-card-meta">📍 Goa, India &nbsp;·&nbsp; Travel Vlog by Aryan</div>
+        </div>
+      </div>
+      <div class="vlog-embed-card reveal rd2">
+        <div class="vlog-thumb-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/ou8UAAZGR9w"
+            title="Goan Explorer Vlog 2"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+        <div class="vlog-card-body">
+          <div class="vlog-card-title">Goan Explorer — Top Pick</div>
+          <div class="vlog-card-meta">📍 Goa, India &nbsp;·&nbsp; Travel Vlog by Aryan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div style="grid-column:1">
+      <a href="#" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:6px;">
+        <div class="logo-icon"><svg viewBox="0 0 159.1 111.1"><path d="M154.8 17.5c-1.8-6.8-7.1-12.1-13.9-13.9C128.8.6 79.6.6 79.6.6S30.3.6 18.2 3.6C11.4 5.4 6.1 10.7 4.3 17.5.9 29.8.9 55.5.9 55.5s0 25.7 3.4 37.9c1.8 6.8 7.1 11.9 13.9 13.7C30.3 110.2 79.6 110.2 79.6 110.2s49.2 0 61.3-3C148 105.4 153.3 100.1 155.1 93.3c3.4-12.2 3.4-37.9 3.4-37.9s0-25.7-3.7-37.9z" fill="#fff"/><polygon points="63.6,79 104.5,55.5 63.6,32" fill="#FF0000"/></svg></div>
+        <span class="logo-text">Goan Explorer</span>
+      </a>
+      <p style="color:rgba(255,255,255,.3);font-size:.8rem;margin-top:10px;line-height:1.7;max-width:210px;font-weight:300;">Travel vlog covering Goa, Maharashtra, Madhya Pradesh, and beyond. Real India, no filter.</p>
+      <div class="footer-socials">
+        <a class="footer-soc" href="https://discord.gg/7cJFkycm" target="_blank"><svg width="16" height="12" viewBox="0 0 71 55" fill="rgba(255,255,255,.5)"><path d="M60.1 4.9A58.6 58.6 0 0 0 45.6.5a40.7 40.7 0 0 0-1.8 3.7 54.2 54.2 0 0 0-16.4 0A38.2 38.2 0 0 0 25.6.5 58.5 58.5 0 0 0 11 4.9C1.6 19.2-1 33.1.3 46.8a59.2 59.2 0 0 0 18.1 9.2 44 44 0 0 0 3.8-6.2 38.3 38.3 0 0 1-6-2.9l1.5-1.1a42.3 42.3 0 0 0 36.3 0l1.5 1.1a38.4 38.4 0 0 1-6 2.9 43.8 43.8 0 0 0 3.8 6.2 59 59 0 0 0 18.1-9.2c1.5-15.8-2.6-29.6-10.3-41.8ZM23.7 38.3c-3.6 0-6.5-3.3-6.5-7.4s2.8-7.4 6.5-7.4 6.5 3.3 6.5 7.4-2.9 7.4-6.5 7.4Zm23.6 0c-3.6 0-6.5-3.3-6.5-7.4s2.8-7.4 6.5-7.4 6.5 3.3 6.5 7.4-2.9 7.4-6.5 7.4Z"/></svg></a>
+        <a class="footer-soc" href="https://www.youtube.com/@Goan_Explorer" target="_blank"><svg width="18" height="12" viewBox="0 0 576 512" fill="rgba(255,255,255,.5)"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg></a>
+        <a class="footer-soc" href="https://www.instagram.com/aryan_studio_818" target="_blank"><svg width="16" height="16" viewBox="0 0 448 512" fill="rgba(255,255,255,.5)"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Explore</h4><a href="#destinations">Destinations</a><a href="#about">About Aryan</a><a href="#videos">Videos</a><a href="#stays">Stays</a><a href="#community">Community</a></div>
+    <div class="footer-col"><h4>Stays</h4><a href="#stays">🏨 Club Mahindra Varca</a><a href="#stays">🌴 Emerald Palms</a><a href="#stays">🏡 Karma Royal Monterio</a><a href="#stays">🌿 Karma Royal Palms</a><a href="#stays">🎶 SinQ Night Club</a><a href="#stays">⭐ Grandiose Apts</a></div>
+    <div class="footer-col"><h4>Channels</h4><a href="https://www.youtube.com/@Goan_Explorer" target="_blank">YouTube ↗</a><a href="https://www.instagram.com/aryan_studio_818" target="_blank">Instagram ↗</a><a href="https://discord.gg/7cJFkycm" target="_blank">Discord ↗</a></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Goan Explorer · Made with ❤️ by Aryan</div>
+    <div class="footer-links">
+      <a href="https://discord.gg/7cJFkycm" target="_blank">Discord ↗</a>
+      <a href="https://www.youtube.com/@Goan_Explorer" target="_blank">YouTube ↗</a>
+      <a href="https://www.instagram.com/aryan_studio_818" target="_blank">Instagram ↗</a>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /mainSite -->
+
+<script>
+(function(){
+'use strict';
+
+/* ═══════════════════════════════════
+   YOUTUBE INTRO SEQUENCE
+═══════════════════════════════════ */
+function runIntro() {
+  const intro   = document.getElementById('yt-intro');
+  const icon    = document.getElementById('yt-icon');
+  const ytText  = document.getElementById('yt-text');
+  const phase1  = document.getElementById('yt-phase1');
+  const combined= document.getElementById('yt-combined');
+  const tagline = document.getElementById('yt-tagline');
+
+  // Step 1 at 300ms: logo pops in
+  setTimeout(() => {
+    icon.classList.add('pop');
+  }, 300);
+
+  // Step 2 at 1100ms: text slides in from right
+  setTimeout(() => {
+    ytText.style.transition = 'opacity 0.5s ease, transform 0.6s cubic-bezier(.23,1,.32,1)';
+    ytText.style.transform = 'translateX(30px)';
+    ytText.style.opacity = '0';
+    // force reflow then animate
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        ytText.style.transform = 'translateX(0)';
+        ytText.style.opacity = '1';
+      });
+    });
+  }, 1050);
+
+  // Step 3 at 2200ms: swap to combined element and start rise
+  setTimeout(() => {
+    phase1.style.display = 'none';
+    combined.style.display = 'flex';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        combined.classList.add('rise');
+      });
+    });
+  }, 2200);
+
+  // Step 4 at 2700ms: tagline appears
+  setTimeout(() => {
+    tagline.classList.add('appear');
+  }, 2700);
+
+  // Step 5 at 4400ms: fade out intro, show main site
+  setTimeout(() => {
+    intro.classList.add('fade-out');
+    setTimeout(() => {
+      intro.style.display = 'none';
+      document.getElementById('mainSite').classList.add('visible');
+      initSite();
+    }, 800);
+  }, 4400);
+}
+
+window.addEventListener('load', () => setTimeout(runIntro, 100));
+
+/* ═══════════════════════════════════
+   MAIN SITE
+═══════════════════════════════════ */
+function initSite() {
+  const isMob = window.innerWidth <= 768;
+
+  // Canvas
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  let mx = W/2, my = H/2, smx = mx, smy = my;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+
+  const COLORS = ['#d4a843','#c05a2a','#e5d4a0','rgba(212,168,67,.7)'];
+  const COUNT = isMob ? 18 : 42;
+  class P {
+    constructor() { this.reset(true); }
+    reset(init) {
+      this.x = Math.random() * W; this.y = init ? Math.random() * H : -5;
+      this.r = Math.random() * 1.3 + .3;
+      this.vx = (Math.random() - .5) * .28; this.vy = (Math.random() - .5) * .28;
+      this.a = Math.random() * .22 + .05;
+      this.c = COLORS[Math.floor(Math.random() * COLORS.length)];
+    }
+    update() {
+      const dx = smx - this.x, dy = smy - this.y, d = Math.sqrt(dx*dx + dy*dy), r = 150;
+      if (d < r && d > 0) { const f = (r-d)/r; this.vx += dx/d*f*.04; this.vy += dy/d*f*.04; }
+      if (d < 28 && d > 0) { this.vx -= dx/d*.14; this.vy -= dy/d*.14; }
+      this.vx *= .93; this.vy *= .93;
+      this.x += this.vx; this.y += this.vy;
+      if (this.x < -8 || this.x > W+8 || this.y < -8 || this.y > H+8) this.reset(false);
+    }
+    draw() {
+      const d = Math.sqrt((smx-this.x)**2 + (smy-this.y)**2);
+      const near = Math.max(0, 1 - d/160);
+      ctx.globalAlpha = this.a + near * .3;
+      ctx.shadowBlur = 3 + near * 12;
+      ctx.shadowColor = this.c;
+      ctx.fillStyle = this.c;
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.r + near, 0, Math.PI*2); ctx.fill();
+    }
+  }
+  const pts = Array.from({ length: COUNT }, () => new P());
+  let lastT = 0;
+  function frame(t) {
+    if (t - lastT < 22) { requestAnimationFrame(frame); return; } lastT = t;
+    smx += (mx - smx) * .1; smy += (my - smy) * .1;
+    ctx.fillStyle = 'rgba(0,2,10,0.14)'; ctx.fillRect(0, 0, W, H);
+    ctx.shadowBlur = 0;
+    if (!isMob) {
+      for (let i = 0; i < pts.length; i++)
+        for (let j = i+1; j < pts.length; j++) {
+          const ddx = pts[i].x - pts[j].x, ddy = pts[i].y - pts[j].y, d2 = ddx*ddx + ddy*ddy;
+          if (d2 < 9800) { ctx.strokeStyle = `rgba(184,130,26,${(1-Math.sqrt(d2)/99)*.08})`; ctx.lineWidth = .5; ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke(); }
+        }
+    }
+    pts.forEach(p => { p.update(); p.draw(); });
+    ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // Aurora parallax
+  const orb1 = document.querySelector('.orb-1'), orb2 = document.querySelector('.orb-2'), orb3 = document.querySelector('.orb-3');
+  let c1x=0, c1y=0, c2x=0, c2y=0, c3x=0, c3y=0;
+  function updOrbs() {
+    const cx = mx/W-.5, cy = my/H-.5;
+    c1x += (cx*80-c1x)*.016; c1y += (cy*60-c1y)*.016;
+    c2x += (cx*-60-c2x)*.012; c2y += (cy*-50-c2y)*.012;
+    c3x += (cx*50-c3x)*.009; c3y += (cy*70-c3y)*.009;
+    if(orb1) orb1.style.transform=`translate(${c1x}px,${c1y}px)`;
+    if(orb2) orb2.style.transform=`translate(${c2x}px,${c2y}px)`;
+    if(orb3) orb3.style.transform=`translate(${c3x}px,${c3y}px)`;
+    requestAnimationFrame(updOrbs);
+  }
+  updOrbs();
+
+  // Hamburger
+  const ham = document.getElementById('hamburger'), menu = document.getElementById('mobileMenu');
+  ham.addEventListener('click', () => {
+    const o = menu.classList.toggle('open');
+    ham.classList.toggle('open', o);
+    document.body.style.overflow = o ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mob-link').forEach(l => l.addEventListener('click', () => {
+    menu.classList.remove('open'); ham.classList.remove('open'); document.body.style.overflow = '';
+  }));
+  document.addEventListener('click', e => {
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !ham.contains(e.target)) {
+      menu.classList.remove('open'); ham.classList.remove('open'); document.body.style.overflow = '';
+    }
+  });
+
+  // 3D tilt
+  document.querySelectorAll('.glass-card,.hotel-card,.video-card,.vlog-embed-card,.sinq-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect(), x = (e.clientX-r.left)/r.width-.5, y = (e.clientY-r.top)/r.height-.5;
+      card.style.transition = 'transform .08s ease';
+      card.style.transform = `perspective(900px) rotateX(${-y*7}deg) rotateY(${x*7}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform .45s cubic-bezier(.23,1,.32,1)';
+      card.style.transform = '';
+    });
+  });
+
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); }), { threshold: .07 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Nav
+  const navEl = document.querySelector('nav');
+  window.addEventListener('scroll', () => { navEl.style.background = window.scrollY > 50 ? 'rgba(0,2,10,.95)' : 'rgba(0,2,10,.85)'; }, { passive: true });
+}
+
+})();
+</script>
+</body>
+</html>
